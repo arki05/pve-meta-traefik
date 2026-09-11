@@ -1,0 +1,14 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: pve-meta-traefik
+Source: https://github.com/arki05/pve-meta-traefik
+
+Files: *
+Copyright: 2026 Julius Arkenberg <julius@rkenberg.de>
+License: AGPL-3.0-or-later
+ This program is free software: you can redistribute it and/or modify it
+ under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or (at your
+ option) any later version.
+ .
+ On Debian systems, the complete text of the GNU Affero General Public
+ License version 3 can be found in /usr/share/common-licenses/AGPL-3.

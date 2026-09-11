@@ -1,0 +1,25 @@
+# /etc/pve-meta-traefik/config.yaml -- keep it 0600, it holds a token secret.
+
+pve:
+  url: https://pve.example.net:8006      # any cluster node
+  token_id: traefik@pve!meta
+  token_secret: 00000000-0000-0000-0000-000000000000
+  # token_secret_file: /etc/pve-meta-traefik/token   # or PVE_META_TRAEFIK_TOKEN_SECRET
+  insecure: true                         # the PVE default certificate is self-signed
+  # ca_file: /etc/pve-meta-traefik/pve-ca.pem
+  # timeout_seconds: 10
+
+# The subtree of each guest's metadata document that holds its Traefik
+# configuration. The token needs read access to it (see README).
+prefix: traefik
+
+# Which guest addresses count, in order of preference. Leave empty for "any
+# global address, IPv4 first". A container running Docker also reports its
+# bridge address; listing your LAN here keeps that from winning.
+cidrs:
+  - 10.10.10.0/23
+
+listen: 127.0.0.1:8087
+
+# 0 = ask the cluster on every Traefik poll (default; nothing is ever stale).
+cache_ttl_seconds: 0

@@ -1,0 +1,27 @@
+[package]
+name = "pve-meta-traefik"
+description = "Traefik HTTP provider endpoint fed from pve-meta guest metadata"
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0-or-later"
+authors = ["Julius Arkenberg <julius@rkenberg.de>"]
+repository = "https://github.com/arki05/pve-meta-traefik"
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio"] }
+futures-util = { version = "0.3", default-features = false }
+clap = { version = "4", features = ["derive"] }
+ipnet = { version = "2", features = ["serde"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+serde_yaml_ng = "0.10"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "sync", "time", "fs"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

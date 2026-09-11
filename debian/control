@@ -1,0 +1,18 @@
+Source: pve-meta-traefik
+Section: net
+Priority: optional
+Maintainer: Julius Arkenberg <julius@rkenberg.de>
+Build-Depends: debhelper-compat (= 13), cargo, rustc
+Standards-Version: 4.6.2
+Homepage: https://github.com/arki05/pve-meta-traefik
+
+Package: pve-meta-traefik
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Traefik HTTP provider endpoint fed from pve-meta guest metadata
+ Serves a Traefik dynamic configuration document assembled from the guests
+ of a Proxmox VE cluster: every running guest whose pve-meta document has a
+ `traefik` subtree contributes it, with the guest's address filled in from
+ the cluster (container interfaces, the guest agent, or an IP tag). Traefik
+ polls it through its built-in HTTP provider; nothing is installed in
+ Traefik itself.

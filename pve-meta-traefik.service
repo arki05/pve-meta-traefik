@@ -1,0 +1,26 @@
+[Unit]
+Description=Traefik HTTP provider endpoint fed from pve-meta
+Documentation=https://github.com/arki05/pve-meta-traefik
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/pve-meta-traefik/config.yaml
+
+[Service]
+# The configuration holds an API token secret. It is handed to the service
+# as a systemd credential, so the file can stay root-only (0600) while the
+# service runs as a throwaway user.
+LoadCredential=config.yaml:/etc/pve-meta-traefik/config.yaml
+ExecStart=/usr/bin/pve-meta-traefik --config ${CREDENTIALS_DIRECTORY}/config.yaml
+Restart=on-failure
+RestartSec=5
+DynamicUser=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/pkg-info.mk
+
+export DH_VERBOSE = 1
+
+%:
+	dh $@
+
+# Cargo.toml's version must agree with debian/changelog's upstream version,
+# so the binary never reports a version other than its package's.
+override_dh_auto_configure:
+ifneq ($(DEB_DISTRIBUTION),UNRELEASED)
+	@perl -ne 'if (/^version\s*=\s*"(\d+(?:\.\d+)+)"/) { my $$v_cargo = $$1; my $$v_deb = "$(DEB_VERSION_UPSTREAM)"; \
+	    die "ERROR: d/changelog <-> Cargo.toml version mismatch: $$v_cargo != $$v_deb\n" if $$v_cargo ne $$v_deb; exit(0); }' Cargo.toml
+endif
+	dh_auto_configure
+
+override_dh_auto_build:
+	$(MAKE) build
+
+override_dh_auto_install:
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/pve-meta-traefik PREFIX=/usr
+
+override_dh_auto_test:
+	# `cargo test` runs on the build host / in CI before packaging.
+
+# The service is enabled but not started: it needs a configuration file first
+# (the unit's ConditionPathExists), and a start without one would only log.
+override_dh_installsystemd:
+	dh_installsystemd --no-start
