@@ -1,0 +1,3 @@
+# A static Rust binary; the YAML parser is the unsafe-libyaml crate compiled
+# in, not a copy of the C library.
+pve-meta-traefik: embedded-library libyaml [usr/bin/pve-meta-traefik]
