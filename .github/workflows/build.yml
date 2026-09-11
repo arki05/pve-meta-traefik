@@ -57,6 +57,11 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
             | sh -s -- -y --profile minimal --default-toolchain stable
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          # debhelper runs the build with HOME pointed at a scratch directory,
+          # so the rustup shims would not find the toolchain under ~/.rustup
+          # without being told where it is.
+          echo "RUSTUP_HOME=$HOME/.rustup" >> "$GITHUB_ENV"
+          echo "CARGO_HOME=$HOME/.cargo" >> "$GITHUB_ENV"
           "$HOME/.cargo/bin/rustup" component add clippy rustfmt
 
       - name: Cache cargo registry and build artifacts
