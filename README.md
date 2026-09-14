@@ -17,12 +17,17 @@ guest that stops, or loses its subtree, is gone from the next answer. If the
 cluster cannot be asked, the answer is an error rather than an empty document,
 so Traefik keeps the routes it has.
 
-The subtree is Traefik's own file-provider format, verbatim. Three things are
+The subtree is Traefik's own file-provider format, verbatim. Four things are
 added on top:
 
 * A server with `port` (and optionally `scheme`) instead of `url` gets the
   guest's address filled in, like the Docker provider's `server.port` label.
   For TCP and UDP services the same rule builds `address`.
+* `port` (and optionally `scheme`) on a router: the router's service is one
+  such server, so the common case is one router and nothing else. The service
+  takes the router's name, or the name the router gives in `service`. A name
+  that is also declared under `services` is refused, since the document would
+  say two things about it.
 * `${ip}`, `${name}` and `${vmid}` are substituted in any string.
 * `ip` at the top of the subtree is the guest's address, trusted as given, for
   guests with several addresses or none the cluster can see.
@@ -34,8 +39,19 @@ traefik:
     routers:
       grafana:
         rule: Host(`grafana.example.net`)
-        entryPoints: [websecure]
-        tls: { certResolver: le }
+        middlewares: [auth@file]
+        port: 3000
+```
+
+is the same as
+
+```yaml
+traefik:
+  http:
+    routers:
+      grafana:
+        rule: Host(`grafana.example.net`)
+        middlewares: [auth@file]
         service: grafana
     services:
       grafana:
@@ -46,6 +62,31 @@ traefik:
 Everything else stays where Traefik documents it, with every option available.
 Names are the author's: a router or service two guests both declare is logged
 and the lower vmid wins.
+
+Two settings on the Traefik side keep documents this short. An entry point
+marked `asDefault` takes every router that names none, and a TLS block on that
+entry point gives every such router its certificate resolver; a router that
+says `entryPoints` or `tls` itself still overrides both. And a middleware
+declared once in Traefik's file provider, say a `chain` named `auth`, lets every
+document say `auth@file` and lets the chain's target change in one place:
+
+```toml
+# traefik static configuration
+[entryPoints.websecure]
+  address = ":443"
+  asDefault = true
+  [entryPoints.websecure.http.tls]
+    certResolver = "le"
+```
+
+```yaml
+# traefik file provider
+http:
+  middlewares:
+    auth:
+      chain:
+        middlewares: [authentik@docker]
+```
 
 ## Addresses
 

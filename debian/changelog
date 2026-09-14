@@ -1,3 +1,13 @@
+pve-meta-traefik (0.1.1-1) unstable; urgency=medium
+
+  * `port` (and `scheme`) on a router builds the router's service: one server
+    on that port at the guest's address, named after the router or after the
+    router's `service`. A name also declared under `services` is refused.
+  * README: the Traefik-side defaults (an `asDefault` entry point with a TLS
+    block, a middleware chain in the file provider) that keep documents short.
+
+ -- Julius Arkenberg <julius@rkenberg.de>  Mon, 14 Sep 2026 19:30:00 +0200
+
 pve-meta-traefik (0.1.0-1) unstable; urgency=medium
 
   * Initial release.

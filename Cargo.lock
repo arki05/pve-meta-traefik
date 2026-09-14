@@ -707,7 +707,7 @@ dependencies = [
 
 [[package]]
 name = "pve-meta-traefik"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "axum",
