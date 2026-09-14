@@ -25,7 +25,6 @@ override_dh_auto_install:
 override_dh_auto_test:
 	# `cargo test` runs on the build host / in CI before packaging.
 
-# The service is enabled but not started: it needs a configuration file first
-# (the unit's ConditionPathExists), and a start without one would only log.
-override_dh_installsystemd:
-	dh_installsystemd --no-start
+# dh_installsystemd defaults: enable, start on install (a quiet no-op without a
+# config file, via ConditionPathExists), restart on upgrade. --no-start would
+# also skip the restart.
