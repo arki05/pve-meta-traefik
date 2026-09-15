@@ -1,3 +1,12 @@
+pve-meta-traefik (0.1.2-1) unstable; urgency=medium
+
+  * Container image: ghcr.io/arki05/pve-meta-traefik, a static binary on
+    scratch, amd64 and arm64, built and pushed by CI on every tag.
+  * The service is restarted on package upgrade; --no-start had suppressed
+    the restart and left it stopped.
+
+ -- Julius Arkenberg <julius@rkenberg.de>  Tue, 15 Sep 2026 10:30:00 +0200
+
 pve-meta-traefik (0.1.1-1) unstable; urgency=medium
 
   * `port` (and `scheme`) on a router builds the router's service: one server

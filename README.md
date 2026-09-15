@@ -115,6 +115,28 @@ apt update && apt install pve-meta-traefik
 
 Or take the `.deb` from a [release](https://github.com/arki05/pve-meta-traefik/releases).
 
+Or run the container image, a static binary on `scratch`, for amd64 and arm64:
+
+```yaml
+services:
+  pve-meta-traefik:
+    image: ghcr.io/arki05/pve-meta-traefik:0.1.2
+    environment: { PVE_META_TRAEFIK_TOKEN_SECRET: "${PVE_META_TRAEFIK_TOKEN_SECRET}" }
+    configs: [{ source: pve-meta-traefik, target: /config.yaml }]
+configs:
+  pve-meta-traefik:
+    content: |
+      pve: { url: https://pve.example.net:8006, token_id: traefik@pve!meta, insecure: true }
+      prefix: traefik
+      cidrs: [10.10.10.0/23]
+      listen: 0.0.0.0:8087
+```
+
+Traefik in the same compose project reaches it as `http://pve-meta-traefik:8087/`.
+The secret comes from the environment, so the configuration holds none. The
+image reads `/config.yaml` by default (`PVE_META_TRAEFIK_CONFIG`), so
+`docker compose run --rm pve-meta-traefik --once` shows the document.
+
 ### A token on the cluster
 
 The service needs a PVE API token that may list guests and read their

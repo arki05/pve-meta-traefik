@@ -36,8 +36,13 @@ use render::Guest;
 #[derive(Parser)]
 #[command(version, about)]
 struct Cli {
-    /// The configuration file.
-    #[arg(short, long, default_value = "/etc/pve-meta-traefik/config.yaml")]
+    /// The configuration file (also `PVE_META_TRAEFIK_CONFIG`).
+    #[arg(
+        short,
+        long,
+        env = "PVE_META_TRAEFIK_CONFIG",
+        default_value = "/etc/pve-meta-traefik/config.yaml"
+    )]
     config: PathBuf,
 
     /// Render the document once to stdout and exit, instead of serving it.
