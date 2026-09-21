@@ -140,23 +140,15 @@ image reads `/config.yaml` by default (`PVE_META_TRAEFIK_CONFIG`), so
 ### A token on the cluster
 
 The service needs a PVE API token that may list guests and read their
-addresses, and a pve-meta permission file that lets it read the `traefik`
-subtree:
+addresses and metadata documents: full read of a guest's document is
+`VM.Audit`, which is all this service ever needs (pve-meta 0.2 grants no
+per-prefix access; there is no permission file to write):
 
 ```sh
 pveum user add traefik@pve
 pveum role add TraefikMeta --privs 'VM.Audit VM.GuestAgent.Audit'
 pveum acl modify /vms --users traefik@pve --roles TraefikMeta
 pveum user token add traefik@pve meta --privsep 0
-```
-
-```yaml
-# /etc/pve/meta.d/permissions/traefik.yaml
-authid: traefik@pve!meta
-rules:
-  - prefix: traefik
-    mode: ro
-    selector: { all: true }
 ```
 
 ### Configuration
