@@ -1,3 +1,12 @@
+pve-meta-traefik (0.1.3-1) unstable; urgency=medium
+
+  * The cluster token needs VM.Audit and nothing else since pve-meta 0.2:
+    the permission-file section is gone. Verified end-to-end on the lab:
+    a Host() router with a port renders the guest's address from the
+    cluster, routes, and 404s anything unmatched.
+
+ -- Julius Arkenberg <julius@rkenberg.de>  Mon, 21 Sep 2026 19:00:00 +0200
+
 pve-meta-traefik (0.1.2-1) unstable; urgency=medium
 
   * Container image: ghcr.io/arki05/pve-meta-traefik, a static binary on

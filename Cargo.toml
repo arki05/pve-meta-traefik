@@ -1,7 +1,7 @@
 [package]
 name = "pve-meta-traefik"
 description = "Traefik HTTP provider endpoint fed from pve-meta guest metadata"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 license = "AGPL-3.0-or-later"
 authors = ["Julius Arkenberg <julius@rkenberg.de>"]
